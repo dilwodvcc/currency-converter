@@ -1,40 +1,41 @@
-<?php 
-class Currency{
- const CURRENCY_API_URL = "https://cbu.uz/uz/arkhiv-kursov-valyut/json/";
- public $currencies;
- public function __construct(){
+<?php
+class Currency {
+    const CURRENCY_API_URL = "https://cbu.uz/uz/arkhiv-kursov-valyut/json/";
 
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL,self::CURRENCY_API_URL);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+    private array $currencies = [];
 
-    $output = curl_exec($ch);
-    curl_close($ch);
-    $this->currencies = json_decode($output);
-    }
-public function getCurrencies():array{
-    $separated_date = [];
-    $currensies_info = $this->currencies;
-    foreach($currensies_info as $currency){
-        $separated_date[$currency->Ccy] = $currency->Rate;}
-        return $separated_date;
-}
-public function exchange($value, $from, $to) {
-    $currencies = $this->getCurrencies();
+    public function __construct() {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, self::CURRENCY_API_URL);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $output = curl_exec($ch);
+        curl_close($ch);
 
-    if (!isset($currencies[$from]) || !isset($currencies[$to])) {
-        throw new Exception("Valyuta topilmadi.");
+        $this->currencies = json_decode($output, true);
     }
 
-    $fromRate = $currencies[$from];
-    $toRate = $currencies[$to];
+    public function getCurrencies(): array {
+        $separated_data = ['UZS' => 1];
+        foreach ($this->currencies as $currency) {
+            $separated_data[$currency['Ccy']] = $currency['Rate'];
+        }
+        return $separated_data;
+    }
 
-
-    $convertedValue = ($value / $fromRate) * $toRate;
-    return round($convertedValue, 2) . ' ' . $to;
+    public function exchange($amount, $from_currency = 'USD', $to_currency = 'UZS'): string {
+        $rates = $this->getCurrencies();
+    
+        if (!isset($rates[$from_currency]) || !isset($rates[$to_currency])) {
+            return "Currency not available for conversion.";
+        }
+    
+        $amount_in_uzs = ($from_currency === 'UZS') ? $amount : $amount * $rates[$from_currency];
+    
+        $converted_amount = ($to_currency === 'UZS') ? $amount_in_uzs : $amount_in_uzs / $rates[$to_currency];
+    
+        $formatted_amount = number_format($converted_amount, 3, '.', ' ');
+    
+        return $formatted_amount . ' ' . $to_currency;
+    }
+    
 }
-
-}
-
-$currency = new Currency() ;
-?>
