@@ -6,25 +6,7 @@
     <title>Weather Information</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
-        .weather-details { font-size: 1.2em; }
-        .weather-card {
-            background: rgba(0, 0, 0, 0.7);
-            color: #ffffff; 
-            max-width: 500px;
-            margin: 30px auto;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            }
-            body {
-                background-image: url(https://img1.akspic.ru/crops/5/6/1/9/7/179165/179165-les-damaksnis-atmosfera-rastenie-svet-3840x2160.jpg); 
-                background-size: cover;
-                background-repeat: no-repeat;
-                background-attachment: fixed; 
-                color: #ffffff; 
-            }
-    </style>
+    <link rel="stylesheet" href="w_style.css">
 </head>
 <body>
 <div class="container">

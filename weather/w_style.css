@@ -1,0 +1,17 @@
+.weather-details { font-size: 1.2em; }
+        .weather-card {
+            background: rgba(0, 0, 0, 0.7);
+            color: #ffffff; 
+            max-width: 500px;
+            margin: 30px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+            body {
+                background-image: url(https://img1.akspic.ru/crops/5/6/1/9/7/179165/179165-les-damaksnis-atmosfera-rastenie-svet-3840x2160.jpg); 
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-attachment: fixed; 
+                color: #ffffff; 
+            }

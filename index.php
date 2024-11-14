@@ -1,5 +1,5 @@
 <?php
-include 'Currency.php';
+include 'view/Currency.php';
 
 $currency = new Currency();
 $currencies = $currency->getCurrencies();
