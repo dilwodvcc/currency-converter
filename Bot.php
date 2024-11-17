@@ -84,11 +84,12 @@
             <br><br>
             <button type="submit">Xabar yuborish</button>
         </form>
-
-        <!-- Javob xabarini bu yerda ko'rsatamiz -->
         <?php
         $botToken = '7534341779:AAE5jziTYpkfDnbMxL4XSCvl8bW373JJCng';
-        $chatId = "6177186948";
+        
+        $apiUrl = "https://api.telegram.org/bot$botToken/getUpdates";
+        $response = file_get_contents($apiUrl);
+        $updates = json_decode($response, true);
 
         function getCurrencyRates() {
             $currencyData = file_get_contents("https://cbu.uz/uz/arkhiv-kursov-valyut/json/");
@@ -107,6 +108,7 @@
             return $message;
         }
 
+        // Yangi cURL funksiyasi
         function sendMessageToTelegram($botToken, $chatId, $message) {
             $apiUrl = "https://api.telegram.org/bot$botToken/sendMessage";
 
@@ -115,18 +117,19 @@
                 'text' => $message,
             ];
 
-            $options = [
-                'http' => [
-                    'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-                    'method' => 'POST',
-                    'content' => http_build_query($data),
-                ],
-            ];
+            $ch = curl_init($apiUrl);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 
-            $context = stream_context_create($options);
-            $result = file_get_contents($apiUrl, false, $context);
+            $response = curl_exec($ch);
+            curl_close($ch);
 
-            return $result ? true : false;
+            if ($response) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['customMessage'])) {
@@ -142,12 +145,20 @@
                 echo '<div class="response-message warning">Iltimos, xabarni to\'ldiring.</div>';
             }
         } else {
-            $currencyMessage = getCurrencyRates();
-            $sendResult = sendMessageToTelegram($botToken, $chatId, $currencyMessage);
-            if ($sendResult) {
-                echo '<div class="response-message">Valyuta kurslari yuborildi!</div>';
-            } else {
-                echo '<div class="response-message error">Valyuta kurslarini yuborishda xato yuz berdi.</div>';
+            foreach ($updates['result'] as $update) {
+                if (isset($update['message']['text'])) {
+                    $messageText = $update['message']['text'];
+                    $chatId = $update['message']['chat']['id'];
+                    if (strtolower($messageText) === "/start") {
+                        $currencyMessage = getCurrencyRates();
+                        $sendResult = sendMessageToTelegram($botToken, $chatId, $currencyMessage);
+                        if ($sendResult) {
+                            echo '<div class="response-message">Valyuta kurslari yuborildi!</div>';
+                        } else {
+                            echo '<div class="response-message error">Valyuta kurslarini yuborishda xato yuz berdi.</div>';
+                        }
+                    }
+                }
             }
         }
         ?>
