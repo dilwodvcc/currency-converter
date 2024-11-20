@@ -1,3 +1,37 @@
+<?php
+require_once 'Currency.php';
+
+// Valyutalar va natijani tayyorlash
+try {
+    $currency = new Currency();
+    $currencies = $currency->getCurrencies();
+    if (!$currencies || !is_array($currencies)) {
+        $currencies = [];
+        $result = "Currency data could not be retrieved. Please try again later.";
+    }
+} catch (Exception $e) {
+    $currencies = [];
+    $result = "Error: " . $e->getMessage();
+}
+
+$result = $result ?? null;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $amount = floatval($_POST['amount'] ?? 0);
+    $from = htmlspecialchars($_POST['from'] ?? '');
+    $to = htmlspecialchars($_POST['to'] ?? '');
+
+    if ($amount <= 0 || empty($from) || empty($to)) {
+        $result = "Please enter valid input data.";
+    } else {
+        try {
+            $result = $currency->exchange($amount, $from, $to);
+        } catch (Exception $e) {
+            $result = "Conversion failed: " . $e->getMessage();
+        }
+    }
+}
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -22,9 +56,13 @@
                 </div>
                 <div class="col-md-3">
                     <select class="form-select" name="from">
-                        <?php foreach ($currencies as $key => $rate): ?>
-                            <option value="<?= $key ?>"><?= $key ?></option>
-                        <?php endforeach; ?>
+                        <?php if (!empty($currencies)): ?>
+                            <?php foreach ($currencies as $key => $rate): ?>
+                                <option value="<?= $key ?>"><?= $key ?></option>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <option disabled>No currencies available</option>
+                        <?php endif; ?>
                     </select>
                 </div>
                 <div class="col-md-1 text-center">
@@ -32,16 +70,22 @@
                 </div>
                 <div class="col-md-3">
                     <select class="form-select" name="to">
-                        <?php foreach ($currencies as $key => $rate): ?>
-                            <option value="<?= $key ?>" <?= $key === 'UZS' ? 'selected' : '' ?>><?= $key ?></option>
-                        <?php endforeach; ?>
+                        <?php if (!empty($currencies)): ?>
+                            <?php foreach ($currencies as $key => $rate): ?>
+                                <option value="<?= $key ?>" <?= $key === 'UZS' ? 'selected' : '' ?>><?= $key ?></option>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <option disabled>No currencies available</option>
+                        <?php endif; ?>
                     </select>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary btn-primary-custom mt-3">Convert</button>
         </form>
         <?php if ($result): ?>
-            <p class="mt-3">Converted Amount: <?= htmlspecialchars($result) ?></p>
+            <p class="mt-3 alert <?= strpos($result, 'Error') !== false ? 'alert-danger' : 'alert-success' ?>">
+                <?= htmlspecialchars($result) ?>
+            </p>
         <?php endif; ?>
     </div>
 </div>

@@ -30,3 +30,12 @@
             background-color: #d9534f;
             color: #ffffff;
         }
+.btn-primary-custom {
+    background-color: #0056b3;
+    border: none;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.btn-primary-custom:hover {
+    background-color: #003d80;
+}
