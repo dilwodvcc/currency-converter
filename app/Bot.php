@@ -1,10 +1,8 @@
 <?php
 
-require 'vendor/autoload.php'; // Guzzle'ni yuklash uchun
+require '../vendor/autoload.php';
 
 use GuzzleHttp\Client;
-
-// Telegram Bot klassi
 class Bot
 {
     private $token;
@@ -73,7 +71,6 @@ function getCurrencyRates()
     }
 }
 
-// Xabar yuborish logikasi
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $botToken = '7534341779:AAE5jziTYpkfDnbMxL4XSCvl8bW373JJCng';
     $bot = new Bot($botToken);
@@ -81,11 +78,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $customMessage = htmlspecialchars($_POST['customMessage']);
     $currencyRates = getCurrencyRates();
 
-    // Xabar tayyorlash
     $fullMessage = $customMessage . "\n\n" . $currencyRates;
 
-    // Chat ID-ni kiritishingiz kerak
-    $chatId = '<YOUR_CHAT_ID>'; // Bu yerga haqiqiy chat_id ni kiriting
+    $chatId = '<YOUR_CHAT_ID>';
 
     $result = $bot->sendMessage($chatId, $fullMessage);
 

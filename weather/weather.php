@@ -10,7 +10,7 @@
 </head>
 <body>
 <div class="container">
-    <h1 class="text-center mt-4" style="color: black;">Weather Information</h1>
+    <h1 class="text-center mt-4" style="color: #ffffff;">Weather Information</h1>
     <div class="weather-card">
         <form method="POST">
             <div class="mb-3">
@@ -21,7 +21,7 @@
         </form>
 
         <?php
-        require 'vendor/autoload.php';
+        require '../vendor/autoload.php';
 
         use GuzzleHttp\Client;
 

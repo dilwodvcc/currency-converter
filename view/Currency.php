@@ -1,5 +1,5 @@
 <?php
-require 'vendor/autoload.php'; // Guzzle-ni yuklash uchun kerak
+require '../vendor/autoload.php'; // Guzzle-ni yuklash uchun kerak
 
 use GuzzleHttp\Client;
 
@@ -23,7 +23,7 @@ class Currency {
     }
 
     public function getCurrencies(): array {
-        $separated_data = ['UZS' => 1];
+        $separated_data = ['UZS' => 1]; // Milliy valyutani qo'shamiz
         foreach ($this->currencies as $currency) {
             $separated_data[$currency['Ccy']] = $currency['Rate'];
         }
@@ -37,12 +37,23 @@ class Currency {
             return "Currency not available for conversion.";
         }
 
+        // From_currency UZS bo'lsa, oddiy hisob
         $amount_in_uzs = ($from_currency === 'UZS') ? $amount : $amount * $rates[$from_currency];
 
+        // To_currency UZS bo'lsa, oddiy hisob
         $converted_amount = ($to_currency === 'UZS') ? $amount_in_uzs : $amount_in_uzs / $rates[$to_currency];
 
         $formatted_amount = number_format($converted_amount, 3, '.', ' ');
 
-        return $formatted_amount . ' ' . $to_currency;
+        return $amount . " $from_currency = $formatted_amount $to_currency";
+    }
+
+    public function listAvailableCurrencies(): string {
+        $currencies = $this->getCurrencies();
+        $currencyList = "Available currencies:\n";
+        foreach (array_keys($currencies) as $currency) {
+            $currencyList .= "- $currency\n";
+        }
+        return $currencyList;
     }
 }

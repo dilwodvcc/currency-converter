@@ -1,7 +1,5 @@
 <?php
 require_once 'Currency.php';
-
-// Valyutalar va natijani tayyorlash
 try {
     $currency = new Currency();
     $currencies = $currency->getCurrencies();
@@ -39,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Currency Converter</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="view/c_style.css">
+    <link rel="stylesheet" href="c_style.css">
 </head>
 <body>
 <div class="currency-section text-center pt-5 bg-primary-subtle">
@@ -93,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="info-section bg-light p-5 text-center">
     <h4 class="fw-bold mb-3">Weather Forecast</h4>
     <p class="text-muted">Get real-time weather information for any location. Click below for more details.</p>
-    <button class="btn btn-outline-danger btn-lg" onclick="window.open('weather/weather.php', '_blank')">More</button>
+    <button class="btn btn-outline-danger btn-lg" onclick="window.open('/weather', '_blank')">More</button>
 </div>
 </body>
 </html>
