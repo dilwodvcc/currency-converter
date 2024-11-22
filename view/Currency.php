@@ -1,5 +1,5 @@
 <?php
-require '../vendor/autoload.php'; // Guzzle-ni yuklash uchun kerak
+require 'vendor/autoload.php'; // Guzzle-ni yuklash uchun kerak
 
 use GuzzleHttp\Client;
 

@@ -1,94 +1,41 @@
 <?php
-
-require '../vendor/autoload.php';
-
+require "vendor/autoload.php";
+require "app/DB.php";
 use GuzzleHttp\Client;
-class Bot
-{
-    private $token;
-    private $apiUrl;
-    private $client;
 
-    public function __construct($token)
-    {
-        $this->token = $token;
-        $this->apiUrl = "https://api.telegram.org/bot$this->token/";
-        $this->client = new Client();
+class Bot {
+    const API_URL = 'https://api.telegram.org/bot';
+    private $token = '7534341779:AAE5jziTYpkfDnbMxL4XSCvl8bW373JJCng';
+    public $client;
+    public function makeRequest($method, $data = []) {
+        $this->client = new Client([
+            'base_uri' => self::API_URL . $this->token . '/',
+            'timeout'  => 2.0,
+        ]);
+
+        $request = $this->client->request('POST', $method, ['json' => $data]);
+
+        return json_decode($request->getBody()->getContents());
     }
-
-    public function makeRequest($method, $params = [])
-    {
-        $url = $this->apiUrl . $method;
-
-        try {
-            $response = $this->client->post($url, [
-                'form_params' => $params
-            ]);
-
-            return json_decode($response->getBody(), true);
-        } catch (Exception $e) {
-            return ['ok' => false, 'error' => $e->getMessage()];
+    public function saveUser($chat_id, $username): bool {
+        var_dump($this->getUser($chat_id));
+        if($this->getUser($chat_id)) {
+            return false;
         }
-    }
-
-    public function sendMessage($chatId, $message)
-    {
-        return $this->makeRequest('sendMessage', [
-            'chat_id' => $chatId,
-            'text' => $message
+        $query = "INSERT INTO user (chat_id, username) VALUES (:chat_id, :username)";
+        $db = new DB();
+        return $db->conn->prepare($query)->execute([
+            ':chat_id' => $chat_id,
+            ':username' => $username,
         ]);
     }
-
-    public function getUpdates()
-    {
-        return $this->makeRequest('getUpdates');
+    public function getUser($chat_id):bool|array {
+        $query = "SELECT * FROM user WHERE chat_id = :chat_id";
+        $db = new DB();
+        $stmt= $db->conn->prepare($query);
+        $stmt->execute([
+            ':chat_id' => $chat_id,
+        ]);
+        return $stmt->fetch();
     }
 }
-
-// Valyuta kurslarini olish funksiyasi
-function getCurrencyRates()
-{
-    $client = new Client();
-    $apiUrl = "https://cbu.uz/uz/arkhiv-kursov-valyut/json/";
-
-    try {
-        $response = $client->get($apiUrl);
-        $currencyData = json_decode($response->getBody(), true);
-
-        if (!$currencyData) {
-            return "Valyuta kurslarini olishda xato yuz berdi.";
-        }
-
-        $message = "Bugungi valyuta kurslari:\n";
-        foreach ($currencyData as $rate) {
-            if ($rate['Ccy'] === 'USD' || $rate['Ccy'] === 'EUR') {
-                $message .= "1 " . $rate['Ccy'] . " = " . $rate['Rate'] . " UZS\n";
-            }
-        }
-        return $message;
-    } catch (Exception $e) {
-        return "Xato yuz berdi: " . $e->getMessage();
-    }
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $botToken = '7534341779:AAE5jziTYpkfDnbMxL4XSCvl8bW373JJCng';
-    $bot = new Bot($botToken);
-
-    $customMessage = htmlspecialchars($_POST['customMessage']);
-    $currencyRates = getCurrencyRates();
-
-    $fullMessage = $customMessage . "\n\n" . $currencyRates;
-
-    $chatId = '<YOUR_CHAT_ID>';
-
-    $result = $bot->sendMessage($chatId, $fullMessage);
-
-    if ($result['ok']) {
-        echo "<p class='response-message'>Xabar muvaffaqiyatli yuborildi!</p>";
-    } else {
-        echo "<p class='response-message error'>Xabar yuborishda xato: " . $result['error'] . "</p>";
-    }
-}
-
-?>
