@@ -1,0 +1,55 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f8f9fa;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+header {
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+header .navbar-brand {
+    font-weight: bold;
+    color: #007bff;
+}
+header .navbar-nav .nav-link {
+    color: #555;
+    font-size: 16px;
+}
+header .navbar-nav .nav-link:hover {
+    color: #007bff;
+}
+footer {
+    background-color: #f1f1f1;
+    padding: 20px 0;
+    color: #666;
+    font-size: 14px;
+}
+main {
+    padding: 20px 0;
+}
+main .btn {
+    margin-right: 10px;
+}
+main h1 {
+    margin-bottom: 20px;
+}
+.card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    background: #fff;
+}
+@media (max-width: 768px) {
+    header .navbar-nav {
+        text-align: center;
+    }
+
+    main .btn {
+        margin-bottom: 10px;
+    }
+}

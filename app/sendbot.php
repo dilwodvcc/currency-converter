@@ -22,7 +22,6 @@ if (isset($update)) {
         $from_id = $message->from->id;
         $username = $message->chat->username ?? '';
         $firstName = $message->from->first_name ?? 'Foydalanuvchi';
-
         $bot->saveUser($from_id, $firstName);
         $text = $message->text;
 

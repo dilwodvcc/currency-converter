@@ -1,5 +1,5 @@
 <?php
-require 'vendor/autoload.php'; // Guzzle-ni yuklash uchun kerak
+require 'vendor/autoload.php';
 
 use GuzzleHttp\Client;
 
@@ -16,7 +16,6 @@ class Currency {
             $output = $response->getBody()->getContents();
             $this->currencies = json_decode($output, true);
         } catch (\Exception $e) {
-            // Xatoliklarni boshqarish
             echo "API dan valyutalar ma'lumotini olishda xatolik yuz berdi: " . $e->getMessage();
             $this->currencies = [];
         }
@@ -37,10 +36,8 @@ class Currency {
             return "Currency not available for conversion.";
         }
 
-        // From_currency UZS bo'lsa, oddiy hisob
         $amount_in_uzs = ($from_currency === 'UZS') ? $amount : $amount * $rates[$from_currency];
 
-        // To_currency UZS bo'lsa, oddiy hisob
         $converted_amount = ($to_currency === 'UZS') ? $amount_in_uzs : $amount_in_uzs / $rates[$to_currency];
 
         $formatted_amount = number_format($converted_amount, 3, '.', ' ');
