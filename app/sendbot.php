@@ -230,4 +230,3 @@ function handleCallbackQuery($bot, $callbackQuery, $currencies) {
         }
     }
 }
-echo 'Ishladi';

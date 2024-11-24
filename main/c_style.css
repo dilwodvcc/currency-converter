@@ -1,41 +1,139 @@
-.currency-card { max-width: 600px; margin: 0 auto; padding: 30px; background: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 8px; }
-        .currency-section { padding: 60px 0; }
-        .info-section { padding: 60px 0; text-align: center; }
-        .btn-primary-custom { background-color: #d32f2f; border: none; }
-        .info-section {
-            background: linear-gradient(to bottom right, #f0f4f8, #ffffff);
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
-            margin: 30px auto;
-            padding: 40px 20px;
-        }
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
 
-        .info-section h4 {
-            font-size: 1.8em;
-            color: #333333;
-        }
+h1, h3, h4 {
+    font-weight: bold;
+}
 
-        .info-section p {
-            font-size: 1.1em;
-            color: #666666;
-        }
+.currency-section {
+    background-color: #f1f5f9;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-radius: 8px;
+}
 
-        .btn-outline-danger {
-            border-color: #d9534f;
-            color: #d9534f;
-        }
+.currency-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
 
-        .btn-outline-danger:hover {
-            background-color: #d9534f;
-            color: #ffffff;
-        }
+.currency-card h3 {
+    font-size: 1.75rem;
+    margin-bottom: 15px;
+}
+
+.currency-card p {
+    font-size: 1rem;
+    margin-bottom: 25px;
+}
+
+.currency-card .form-select, .currency-card .form-control {
+    height: 40px;
+    border-radius: 8px;
+}
+
+/* Button Styles */
 .btn-primary-custom {
-    background-color: #0056b3;
-    border: none;
-    transition: background-color 0.3s ease-in-out;
+    background-color: #007bff;
+    border-color: #007bff;
+    padding: 10px 20px;
+    font-size: 1.125rem;
+    border-radius: 8px;
 }
 
 .btn-primary-custom:hover {
-    background-color: #003d80;
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.btn-outline-danger {
+    border-radius: 8px;
+    font-size: 1.125rem;
+}
+
+/* Input Fields */
+input[type="number"] {
+    width: 100%;
+    height: 40px;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+select.form-select {
+    height: 40px;
+    border-radius: 8px;
+    padding: 5px;
+}
+
+/* Info Section */
+.info-section {
+    margin-top: 50px;
+    background-color: #f8f9fa;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.info-section h4 {
+    font-size: 2rem;
+    color: #343a40;
+}
+
+.info-section p {
+    font-size: 1rem;
+    color: #6c757d;
+}
+
+.info-section .btn-lg {
+    font-size: 1.25rem;
+    padding: 12px 30px;
+    border-radius: 8px;
+}
+
+/* Alerts */
+.alert {
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 1.125rem;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+@media (max-width: 768px) {
+    .currency-section {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .currency-card {
+        padding: 15px;
+    }
+
+    .btn-primary-custom {
+        font-size: 1rem;
+        padding: 8px 16px;
+    }
+
+    .info-section {
+        padding: 30px;
+    }
 }
